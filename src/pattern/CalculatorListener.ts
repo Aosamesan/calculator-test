@@ -27,6 +27,7 @@ export default class CalculatorListener implements CalcListener {
                 this.result.result = frame.pop();
                 return;
             }
+            throw new Error('루트 계산 프레임의 길이가 1이 아님 (연산자 부족)');
         } else {
             if (frame?.length == 1) {
                 const lastFrame: Array<number> | undefined = this.getLastFrame();
@@ -36,9 +37,10 @@ export default class CalculatorListener implements CalcListener {
                     lastFrame?.push(r);
                     return;
                 }
+                throw new Error('현재 계산 프레임이 비어있음 (피연산자, 결과 부족)');
             }
+            throw new Error('현재 계산 프레임의 계산 후 스택에 남은 피연산자가 하나가 아님.');
         }
-        throw new Error(`Something wrong...`);
     }
 
     exitRest_expression(ctx: Rest_expressionContext): void {
@@ -51,18 +53,18 @@ export default class CalculatorListener implements CalcListener {
                 if (rear != undefined && prev != undefined) {
                     lastFrame?.push(prev + rear);
                 } else {
-                    throw new Error(`Multiplication number is undefined`);
+                    throw new Error('덧셈 피연산자 부족');
                 }
                 break;
             case '-':
                 if (rear != undefined && prev != undefined) {
                     lastFrame?.push(prev - rear);
                 } else {
-                    throw new Error(`Multiplication number is undefined`);
+                    throw new Error('뺄셈 피연산자 부족');
                 }
                 break;
             default:
-                throw new Error(`Undefined operator : ${op}`);
+                throw new Error(`뭐야 여기 어떻게 들어왔어 (연산자 : ${op})`);
         }
     }
 
@@ -76,18 +78,18 @@ export default class CalculatorListener implements CalcListener {
                 if (rear != undefined && prev != undefined) {
                     lastFrame?.push(prev * rear);
                 } else {
-                    throw new Error(`Multiplication number is undefined`);
+                    throw new Error('곱셈 피연산자 부족');
                 }
                 break;
             case '/':
                 if (rear != undefined && prev != undefined) {
                     lastFrame?.push(prev  / rear);
                 } else {
-                    throw new Error(`Multiplication number is undefined`);
+                    throw new Error('나눗셈 피연산자 부족');
                 }
                 break;
             default:
-                throw new Error(`Undefined operator : ${op}`);
+                throw new Error(`뭐야 여기 어떻게 들어왔어 (연산자 : ${op})`);
         }
     }
 
@@ -118,7 +120,7 @@ export default class CalculatorListener implements CalcListener {
                 lastFrame?.push(Math.E);
                 break;
             default:
-                throw new Error(`Unrecognized token : ${c}`);
+                throw new Error(`뭐야 여기 어떻게 들어왔어 (상수 : ${c})`);
         }
     }
 }

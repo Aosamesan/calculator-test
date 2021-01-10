@@ -21,7 +21,7 @@ app.get("/calculate", async (req: express.Request, res: express.Response) => {
                 result
             }))
             .catch((err) => res.status(400).json({
-                message: `Invalid Expression : ${expression}`
+                message: `Invalid Expression : ${expression} ${err}`
             }));
     } else {
         res.status(400).json({

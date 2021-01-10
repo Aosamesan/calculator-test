@@ -16,12 +16,12 @@ export default async function calculate(input: string): Promise<number> {
                 const listener: CalcListener = new CalcListener();
                 const tree = parser.statement();
                 ParseTreeWalker.DEFAULT.walk(listener as ParseTreeListener, tree);
-                if (listener.result.result) {
+                if (listener.result.result !== undefined) {
                     resolve(listener.result.result);
                     return;
                 }
             }
-            reject(new Error(`Invliad input : ${input}`));
+            reject(new Error(`입력이 잘못됨 (괄호 등) : ${input}`));
         } catch (err) {
             reject(err);
         }
